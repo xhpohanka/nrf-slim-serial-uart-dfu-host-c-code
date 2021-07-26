@@ -165,9 +165,9 @@ static void uart_data_to_buff(const uint8_t *pData, uint32_t nSize)
 	for (n = 0; n < nSize; n++)
 	{
 		if (!n)
-			len = sprintf(data_buff, "%u", *(pData + n));
+			len = sprintf(data_buff, "%02x", *(pData + n));
 		else
-			len = sprintf(data_buff, ", %u", *(pData + n));
+			len = sprintf(data_buff, ", %02x", *(pData + n));
 
 		if ((size_t)len + 1 < sizeof(logger_buff) - pos)
 		{
@@ -224,7 +224,7 @@ static int dfu_serial_get_rsp(uart_drv_t *p_uart, nrf_dfu_op_t oper, uint32_t *p
 				if (*p_data_cnt >= 4)
 					rsp_error = (rsp_error << 8) + receive_data[3];
 
-				logger_error("Bad result code (0x%X)!", rsp_error);
+				logger_error("Bad result code (0x%04X)!", rsp_error);
 
 				err_code = 1;
 			}
@@ -702,8 +702,8 @@ int dfu_serial_send_firmware(uart_drv_t *p_uart, const uint8_t *p_data, uint32_t
 	int err_code = 0;
 	uint32_t max_size, stp_size, pos;
 	uint32_t crc_32 = 0;
-	nrf_dfu_response_select_t rsp_select;
-	nrf_dfu_response_select_t rsp_recover;
+	nrf_dfu_response_select_t rsp_select = { };
+	nrf_dfu_response_select_t rsp_recover = { };
 	uint32_t pos_start;
 
 	logger_info_1("Sending firmware file...");

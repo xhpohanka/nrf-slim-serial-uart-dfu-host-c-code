@@ -323,7 +323,7 @@ static int dfu_send_object(uart_drv_t *p_uart, dfu_json_object_t *p_dfu_obj, str
 {
 	int err_code = 0;
 	uint8_t *buf_dat = NULL;
-	size_t buf_dat_size;
+	size_t buf_dat_size = 0;
 	uint8_t *buf_bin = NULL;
 	size_t buf_bin_size;
 	dfu_img_param_t dfu_img;
@@ -408,7 +408,7 @@ int dfu_send_package(dfu_param_t *p_dfu)
 	int err_code = 0;
 	struct zip_t *zip_pkg;
 	uint8_t *buf_json = NULL;
-	size_t bufsize;
+	size_t bufsize = 0;
 	jsmn_parser parser;
 	int num_tokens;
 	int num_images, img_n = 0;
